@@ -1,4 +1,4 @@
-package io.kontur.catshelter.service.dto;
+package io.kontur.service.dto;
 
 public class VolunteerDto {
   private String login;

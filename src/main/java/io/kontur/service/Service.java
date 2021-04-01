@@ -1,6 +1,6 @@
-package io.kontur.catshelter.service;
+package io.kontur.service;
 
-import io.kontur.catshelter.service.dto.AbstractDto;
+import io.kontur.service.dto.AbstractDto;
 
 public interface Service<T extends AbstractDto> {
   T create();

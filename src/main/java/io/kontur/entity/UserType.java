@@ -1,4 +1,4 @@
-package io.kontur.catshelter.entity;
+package io.kontur.entity;
 
 public enum UserType {
   ADMIN,

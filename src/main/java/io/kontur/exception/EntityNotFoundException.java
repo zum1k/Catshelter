@@ -1,4 +1,4 @@
-package io.kontur.catshelter.exception;
+package io.kontur.exception;
 
 public class EntityNotFoundException extends RepositoryException {
   private final int errorCode = 40404;

@@ -1,7 +1,7 @@
-package io.kontur.catshelter.repository;
+package io.kontur.repository;
 
-import io.kontur.catshelter.entity.Cat;
-import io.kontur.catshelter.service.dto.AbstractDto;
+import io.kontur.entity.Cat;
+import io.kontur.service.dto.AbstractDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
