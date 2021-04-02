@@ -1,6 +1,6 @@
 package io.kontur.controller;
 
-import io.kontur.service.CatService;
+import io.kontur.service.cat.CatService;
 import io.kontur.service.dto.CatDto;
 import io.kontur.utils.resource.CatLinkModifier;
 import lombok.RequiredArgsConstructor;
@@ -70,7 +70,7 @@ public class CatController {
   @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<CatDto> findTagById(@PathVariable("id")
                                             @Min(value = 1, message = "id must be positive") final long id) {
-    log.info("get tag {}", id);
+    log.info("get cat {}", id);
     CatDto dto = catService.read(id);
     linkModifier.withTagLocation(dto);
     return ResponseEntity.ok().body(dto);
@@ -83,7 +83,7 @@ public class CatController {
   @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<CatDto> deleteTagById(@PathVariable("id")
                                               @Min(value = 1, message = "id must be positive") final long id) {
-    log.info("get tag {}", id);
+    log.info("get cat {}", id);
     catService.delete(id);
     return ResponseEntity.noContent().build();
   }

@@ -1,7 +1,7 @@
 package io.kontur.utils.resource;
 
 import io.kontur.controller.CatController;
-import io.kontur.service.CatService;
+import io.kontur.service.cat.CatService;
 import io.kontur.service.dto.CatDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,6 @@
-package io.kontur.service;
+package io.kontur.service.cat;
 
 import io.kontur.entity.Cat;
-import io.kontur.exception.EntityNotFoundException;
 import io.kontur.repository.Repository;
 import io.kontur.repository.specification.CatByNameSpecification;
 import io.kontur.repository.specification.CriteriaSpecification;
@@ -36,11 +35,9 @@ public class CatServiceImpl implements CatService {
 
   @Override
   public CatDto read(long id) {
-    Optional<Cat> catOptional = repository.read(id);
-    if(catOptional.isEmpty()){
-      throw new EntityNotFoundException(ENTITY_NAME, id);
-    }
-    return catMapper.toDto(catOptional.get());
+    log.info("find cat {}", id);
+    Cat cat = repository.read(id);
+    return catMapper.toDto(cat);
   }
 
   @Override

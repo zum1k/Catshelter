@@ -1,6 +1,7 @@
 package io.kontur.repository;
 
 import io.kontur.entity.Cat;
+import io.kontur.exception.EntityNotFoundException;
 import io.kontur.repository.specification.CriteriaSpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,23 +32,28 @@ public class CatRepository implements Repository<Cat> {
   }
 
   @Override
-  public Optional<Cat> read(long id) {
-    return Optional.empty();
-  }
-
-  @Override
-  public Optional<Cat> update(long id, Cat cat) {
-    return Optional.empty();
+  public Cat read(long id) {
+    Cat cat = entityManager.find(Cat.class, id);
+    if (cat != null) {
+      return cat;
+    }
+    throw new EntityNotFoundException(ENTITY_NAME, id);
   }
 
   @Override
   public Optional<Cat> remove(long id) {
-    return Optional.empty();
+    Cat cat = entityManager.find(Cat.class, id);
+    if (cat != null) {
+      entityManager.remove(cat);
+      return Optional.of(cat);
+    }
+    throw new EntityNotFoundException(ENTITY_NAME, id);
   }
 
   @Override
   public List<Cat> readAll() {
-    return null;
+    TypedQuery<Cat> allQuery = typedQuery();
+    return allQuery.getResultList();
   }
 
   @Override
@@ -55,6 +61,7 @@ public class CatRepository implements Repository<Cat> {
     TypedQuery<Cat> query = entityManager.createQuery(mapQuery(specification));
     return query.getResultStream().findFirst();
   }
+
   private TypedQuery<Cat> typedQuery() {
     CriteriaBuilder builder = entityManager.getCriteriaBuilder();
     CriteriaQuery<Cat> query = builder.createQuery(Cat.class);

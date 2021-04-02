@@ -26,6 +26,7 @@ import java.nio.charset.StandardCharsets;
 @ComponentScan("io.kontur")
 @EnableWebMvc
 @EnableTransactionManagement
+@PropertySource("classpath:message_source/configuration.properties")
 public class WebConfig implements WebMvcConfigurer {
   @Value("${message_source.baseName}")
   private String baseNames;
@@ -62,7 +63,7 @@ public class WebConfig implements WebMvcConfigurer {
     LocalContainerEntityManagerFactoryBean entityManagerFactoryBean =
         new LocalContainerEntityManagerFactoryBean();
     entityManagerFactoryBean.setDataSource(dataSource);
-    entityManagerFactoryBean.setPackagesToScan("com.epam.esm");
+    entityManagerFactoryBean.setPackagesToScan("io.kontur");
     JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
     entityManagerFactoryBean.setJpaVendorAdapter(vendorAdapter);
     return entityManagerFactoryBean;

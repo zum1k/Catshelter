@@ -5,13 +5,14 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
 
+import java.time.ZonedDateTime;
+
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-public class UserDto extends RepresentationModel<UserDto> {
+public class FeedingDto extends RepresentationModel<FeedingDto> {
   private Long id;
-  private String login;
-  private String firstName;
-  private String lastName;
-  private String phoneNumber;
+  private Long userId;
+  private Long catId;
+  private ZonedDateTime feedingTime;
 }

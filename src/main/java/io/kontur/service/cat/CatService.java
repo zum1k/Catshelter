@@ -1,9 +1,8 @@
-package io.kontur.service;
+package io.kontur.service.cat;
 
 import io.kontur.service.dto.CatDto;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface CatService {
   CatDto create(CatDto dto);

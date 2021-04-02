@@ -9,9 +9,7 @@ import java.util.Optional;
 public interface Repository<T extends AbstractEntity> {
   Optional<T> create(T t);
 
-  Optional<T> read(long id);
-
-  Optional<T> update(long id, T t);
+  T read(long id);
 
   Optional<T> remove(long id);
 
