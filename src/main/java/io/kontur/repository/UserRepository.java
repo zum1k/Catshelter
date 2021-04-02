@@ -2,6 +2,7 @@ package io.kontur.repository;
 
 import io.kontur.entity.User;
 import io.kontur.exception.EntityNotFoundException;
+import io.kontur.repository.specification.CriteriaSpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class UserRepository implements Repository<User> {
   }
 
   @Override
-  public Optional<User> update(long id, AbstractDto dto) {
+  public Optional<User> update(long id, User user) {
     return Optional.empty();
   }
 
@@ -50,5 +51,10 @@ public class UserRepository implements Repository<User> {
   @Override
   public List<User> readAll() {
     return null;
+  }
+
+  @Override
+  public Optional<User> findBySpecification(CriteriaSpecification<User> specification) {
+    return Optional.empty();
   }
 }

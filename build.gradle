@@ -17,6 +17,8 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-web')
     implementation('org.springframework.boot:spring-boot-starter-data-jpa')
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.security:spring-security-test'
+    implementation 'org.projectlombok:lombok:1.18.16'
 
     annotationProcessor 'org.projectlombok:lombok:1.18.16'
     testImplementation 'org.projectlombok:lombok:1.18.16'
@@ -47,5 +49,51 @@ dependencies {
     testImplementation group: 'com.h2database', name: 'h2', version: '1.4.200'
     testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '3.5.15'
 
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+jacocoTestReport {
+    dependsOn test
+}
+jacoco {
+    toolVersion = "0.8.5"
+    reportsDir = file("build/customJacocoReportDir")
+}
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination file("build/jacocoHtml")
+    }
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it,
+                    exclude: ['io/kontur/entity', 'io/kontur/controller', 'io/kontur/configuration',
+                              'io/kontur/service/mapper','io/kontur/exception',
+                              'io/kontur/repository/specification', 'io/kontur/application'])
+        }))
+    }
+}
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.5
+            }
+        }
+
+        rule {
+            enabled = false
+            element = 'CLASS'
+            includes = ['org.gradle.*']
+
+            limit {
+                counter = 'LINE'
+                value = 'TOTALCOUNT'
+                maximum = 0.3
+            }
+        }
+    }
 }

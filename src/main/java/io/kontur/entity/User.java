@@ -1,9 +1,9 @@
 package io.kontur.entity;
 
-import io.kontur.utils.AuditEntityDateListener;
+import io.kontur.utils.auditentity.AuditEntityDateListener;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +11,7 @@ import javax.persistence.EntityListeners;
 import javax.persistence.Table;
 import java.time.ZonedDateTime;
 
+@EqualsAndHashCode(callSuper = true)
 @EntityListeners({AuditEntityDateListener.class})
 @Data
 @NoArgsConstructor

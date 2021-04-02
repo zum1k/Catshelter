@@ -1,4 +1,4 @@
-package io.kontur.utils;
+package io.kontur.utils.auditentity;
 
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;

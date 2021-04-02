@@ -1,6 +1,6 @@
 package io.kontur.entity;
 
-import io.kontur.utils.AuditEntityDateListener;
+import io.kontur.utils.auditentity.AuditEntityDateListener;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

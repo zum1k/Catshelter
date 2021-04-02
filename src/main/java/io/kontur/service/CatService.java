@@ -3,6 +3,7 @@ package io.kontur.service;
 import io.kontur.service.dto.CatDto;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CatService {
   CatDto create(CatDto dto);
@@ -12,4 +13,5 @@ public interface CatService {
   CatDto delete(long id);
 
   List<CatDto> findHungryCats();
+
 }
