@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.Table;
+import java.time.ZonedDateTime;
 
 @EntityListeners({AuditEntityDateListener.class})
 @Data
@@ -14,5 +15,7 @@ import javax.persistence.Table;
 @Table(name = "feeding")
 @Entity
 public class Feeding extends AbstractEntity<Long> {
-
+  private Long userId;
+  private Long catId;
+  private ZonedDateTime feedingTime;
 }

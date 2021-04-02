@@ -1,7 +1,6 @@
 package io.kontur.repository;
 
 import io.kontur.entity.AbstractEntity;
-import io.kontur.service.dto.AbstractDto;
 
 import java.util.List;
 import java.util.Optional;

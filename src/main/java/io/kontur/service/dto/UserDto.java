@@ -1,6 +1,6 @@
 package io.kontur.service.dto;
 
-public class VolunteerDto {
+public class UserDto {
   private String login;
   private String firstName;
   private String lastName;
