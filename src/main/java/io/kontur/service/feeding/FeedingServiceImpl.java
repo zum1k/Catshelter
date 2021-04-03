@@ -1,24 +1,24 @@
 package io.kontur.service.feeding;
 
-import io.kontur.entity.Feeding;
-import io.kontur.service.dto.CatDto;
 import io.kontur.service.dto.FeedingDto;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
+@Slf4j
+@AllArgsConstructor
+@Service
 public class FeedingServiceImpl implements FeedingService {
   @Override
-  public Feeding create(FeedingDto dto) {
+  @Transactional
+  public FeedingDto create(FeedingDto dto) {
     return null;
   }
 
   @Override
-  public CatDto read(long id) {
-    return null;
-  }
-
-  @Override
-  public CatDto delete(long id) {
+  public FeedingDto read(long id) {
     return null;
   }
 

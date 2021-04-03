@@ -1,6 +1,7 @@
 package io.kontur.service.cat;
 
 import io.kontur.entity.Cat;
+import io.kontur.exception.EntityNotFoundException;
 import io.kontur.repository.Repository;
 import io.kontur.repository.specification.CatByNameSpecification;
 import io.kontur.repository.specification.CriteriaSpecification;
@@ -9,6 +10,7 @@ import io.kontur.utils.mapper.CatMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +24,7 @@ public class CatServiceImpl implements CatService {
   private final CatMapper catMapper;
 
   @Override
+  @Transactional
   public CatDto create(CatDto dto) {
     log.info("add cat");
     CriteriaSpecification<Cat> specification = new CatByNameSpecification(dto.getName());
@@ -42,11 +45,23 @@ public class CatServiceImpl implements CatService {
 
   @Override
   public CatDto delete(long id) {
-    return null;
+    log.info("delete cat {}", id);
+    Optional<Cat> catOptional = repository.remove(id);
+    return catMapper.toDto(catOptional.orElseThrow(() -> new EntityNotFoundException(ENTITY_NAME, id)));
   }
 
   @Override
   public List<CatDto> findHungryCats() {
+    repository.
     return null;
+  }
+
+  @Override
+  public List<CatDto> allCats() {
+    List<Cat> cats = repository.readAll();
+    if (cats.isEmpty()) {
+      throw new EntityNotFoundException(ENTITY_NAME, 0);
+    }
+    return catMapper.toDtoList(cats);
   }
 }

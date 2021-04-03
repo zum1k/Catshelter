@@ -13,4 +13,6 @@ public interface CatService {
 
   List<CatDto> findHungryCats();
 
+  List<CatDto> allCats();
+
 }
