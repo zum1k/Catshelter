@@ -1,16 +1,11 @@
 package io.kontur.service.user;
 
-import io.kontur.entity.Cat;
-import io.kontur.entity.Feeding;
 import io.kontur.entity.User;
+import io.kontur.exception.EntityNotFoundException;
 import io.kontur.repository.Repository;
-import io.kontur.repository.specification.CatByNameSpecification;
 import io.kontur.repository.specification.CriteriaSpecification;
 import io.kontur.repository.specification.UserByLoginSpecification;
-import io.kontur.service.dto.CatDto;
-import io.kontur.service.dto.FeedingDto;
 import io.kontur.service.dto.UserDto;
-import io.kontur.utils.mapper.CatMapper;
 import io.kontur.utils.mapper.UserMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,18 +14,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+
 @Slf4j
 @AllArgsConstructor
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
   private static final String ENTITY_NAME = "User";
   private final Repository<User> repository;
   private final UserMapper userMapper;
 
   @Override
   @Transactional
-  public Feeding create(UserDto dto) {
-    log.info("add cat");
+  public UserDto create(UserDto dto) {
+    log.info("add user");
     CriteriaSpecification<User> specification = new UserByLoginSpecification(dto.getLogin());
     Optional<User> userOptional = repository.findBySpecification(specification);
     if (userOptional.isEmpty()) {
@@ -41,22 +37,26 @@ public class UserServiceImpl implements UserService{
   }
 
   @Override
-  public CatDto read(long id) {
-    return null;
+  public UserDto read(long id) {
+    log.info("find user {}", id);
+    User user = repository.read(id);
+    return userMapper.toDto(user);
   }
 
   @Override
-  public CatDto delete(long id) {
-    return null;
+  @Transactional
+  public UserDto delete(long id) {
+    log.info("delete user {}", id);
+    Optional<User> userOptional = repository.remove(id);
+    return userMapper.toDto(userOptional.orElseThrow(() -> new EntityNotFoundException(ENTITY_NAME, id)));
   }
 
   @Override
-  public List<FeedingDto> findUserFeeding(long userId) {
-    return null;
-  }
-
-  @Override
-  public List<FeedingDto> findCatFeeding(long catId) {
-    return null;
+  public List<UserDto> allUsers() {
+    List<User> users = repository.readAll();
+    if (users.isEmpty()) {
+      throw new EntityNotFoundException(ENTITY_NAME, 0L);
+    }
+    return userMapper.toDtoList(users);
   }
 }

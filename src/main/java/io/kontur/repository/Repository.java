@@ -15,5 +15,7 @@ public interface Repository<T extends AbstractEntity> {
 
   List<T> readAll();
 
+  List<T> readAllBySpecification(CriteriaSpecification<T> specification);
+
   Optional<T> findBySpecification(CriteriaSpecification<T> specification);
 }

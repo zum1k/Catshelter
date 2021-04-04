@@ -15,6 +15,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @org.springframework.stereotype.Repository
@@ -54,6 +55,12 @@ public class CatRepository implements Repository<Cat> {
   public List<Cat> readAll() {
     TypedQuery<Cat> allQuery = typedQuery();
     return allQuery.getResultList();
+  }
+
+  @Override
+  public List<Cat> readAllBySpecification(CriteriaSpecification<Cat> specification) {
+    TypedQuery<Cat> query = entityManager.createQuery(mapQuery(specification));
+    return query.getResultStream().collect(Collectors.toList());
   }
 
   @Override

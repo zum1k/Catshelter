@@ -44,6 +44,7 @@ public class CatServiceImpl implements CatService {
   }
 
   @Override
+  @Transactional
   public CatDto delete(long id) {
     log.info("delete cat {}", id);
     Optional<Cat> catOptional = repository.remove(id);
@@ -52,7 +53,6 @@ public class CatServiceImpl implements CatService {
 
   @Override
   public List<CatDto> findHungryCats() {
-    repository.
     return null;
   }
 

@@ -9,6 +9,8 @@ public interface FeedingService {
 
   FeedingDto read(long id);
 
+  List<FeedingDto> readAll();
+
   List<FeedingDto> findUserFeeding(long userId);
 
   List<FeedingDto> findCatFeeding(long catId);

@@ -16,6 +16,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @org.springframework.stereotype.Repository
@@ -60,8 +61,15 @@ public class UserRepository implements Repository<User> {
   }
 
   @Override
+  public List<User> readAllBySpecification(CriteriaSpecification<User> specification) {
+    TypedQuery<User> query = entityManager.createQuery(mapQuery(specification));
+    return query.getResultStream().collect(Collectors.toList());
+  }
+
+  @Override
   public Optional<User> findBySpecification(CriteriaSpecification<User> specification) {
-    return Optional.empty();
+    TypedQuery<User> query = entityManager.createQuery(mapQuery(specification));
+    return query.getResultStream().findFirst();
   }
   private TypedQuery<User> typedQuery() {
     CriteriaBuilder builder = entityManager.getCriteriaBuilder();
@@ -71,10 +79,10 @@ public class UserRepository implements Repository<User> {
     return entityManager.createQuery(all);
   }
 
-  private CriteriaQuery<Cat> mapQuery(CriteriaSpecification<Cat> specification) {
+  private CriteriaQuery<User> mapQuery(CriteriaSpecification<User> specification) {
     CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-    CriteriaQuery<Cat> criteriaQuery = builder.createQuery(Cat.class);
-    Root<Cat> tagRoot = criteriaQuery.from(Cat.class);
+    CriteriaQuery<User> criteriaQuery = builder.createQuery(User.class);
+    Root<User> tagRoot = criteriaQuery.from(User.class);
     return criteriaQuery.where(specification.toPredicate(tagRoot, builder));
   }
 }
