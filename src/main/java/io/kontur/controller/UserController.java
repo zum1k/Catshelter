@@ -1,5 +1,6 @@
 package io.kontur.controller;
 
+import io.kontur.service.dto.CatDto;
 import io.kontur.service.dto.UserDto;
 import io.kontur.service.feeding.FeedingService;
 import io.kontur.service.user.UserService;
@@ -12,15 +13,10 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import java.net.URI;
 import java.util.List;
 
 @Slf4j
@@ -30,7 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserController {
   private final UserLinkModifier linkModifier;
-  private final FeedingLinkModifier orderLinkModifier;
+  private final FeedingLinkModifier feedingLinkModifier;
   private final UserService userService;
   private final FeedingService feedingService;
 
@@ -53,6 +49,18 @@ public class UserController {
     log.info("find all users");
     List<UserDto> userDtos = userService.allUsers();
     return ResponseEntity.ok().body(linkModifier.allWithPagination(userDtos));
+  }
+
+  @RequestMapping(
+      value = "/{id}",
+      method = RequestMethod.DELETE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseEntity<CatDto> deleteCatById(@PathVariable("id")
+                                              @Min(value = 1, message = "id must be positive") final long id) {
+    log.info("get user {}", id);
+    userService.delete(id);
+    return ResponseEntity.noContent().build();
   }
 
 }

@@ -22,8 +22,8 @@ public class CatLinkModifier implements DtoLinkModifier<CatDto> {
   @Override
   public void withTagLocation(CatDto catDto) {
     long dtoId = catDto.getId();
-    Link dtoLink = WebMvcLinkBuilder.linkTo(controller.findTagById(dtoId)).withSelfRel();
-    Link deleteLink = WebMvcLinkBuilder.linkTo(controller.deleteTagById(dtoId)).withRel("delete_cat");
+    Link dtoLink = WebMvcLinkBuilder.linkTo(controller.findCatById(dtoId)).withSelfRel();
+    Link deleteLink = WebMvcLinkBuilder.linkTo(controller.deleteCatById(dtoId)).withRel("delete_cat");
     catDto.add(dtoLink, deleteLink);
   }
 

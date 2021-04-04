@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.net.URI;
 import java.util.List;
@@ -28,24 +27,6 @@ import java.util.List;
 public class CatController {
   private final CatLinkModifier linkModifier;
   private final CatService catService;
-
-  @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-  @ResponseStatus(HttpStatus.OK)
-  public ResponseEntity<CollectionModel<CatDto>> hungryCats(@RequestParam(required = false, defaultValue = "1")
-                                                            @Min(value = 1, message = "page must be positive") Integer page,
-                                                            @Min(value = 1, message = "page should be positive")
-                                                            @Max(value = 100, message = "page size must not be greater than 100")
-                                                            @RequestParam(required = false, defaultValue = "50") Integer pageSize
-
-  ) {
-    log.info("get cats");
-//    RequestParametersDto dto = new RequestParametersDto();
-//    dto.setPage(page);
-//    dto.setPageLimit(pageSize);
-
-    List<CatDto> dtos = catService.findHungryCats();
-    return ResponseEntity.ok().body(linkModifier.allWithPagination(dtos));
-  }
 
   @RequestMapping(
       consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -68,7 +49,7 @@ public class CatController {
       method = RequestMethod.GET,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public ResponseEntity<CatDto> findTagById(@PathVariable("id")
+  public ResponseEntity<CatDto> findCatById(@PathVariable("id")
                                             @Min(value = 1, message = "id must be positive") final long id) {
     log.info("get cat {}", id);
     CatDto dto = catService.read(id);
@@ -76,16 +57,31 @@ public class CatController {
     return ResponseEntity.ok().body(dto);
   }
 
+  @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseEntity<CollectionModel<CatDto>> allCats() {
+    log.info("get all cats");
+    List<CatDto> dtos = catService.allCats();
+    return ResponseEntity.ok().body(linkModifier.allWithPagination(dtos));
+  }
+
+  @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseEntity<CollectionModel<CatDto>> hungryCats() {
+    log.info("get hungry cats");
+    List<CatDto> dtos = catService.findHungryCats();
+    return ResponseEntity.ok().body(linkModifier.allWithPagination(dtos));
+  }
+
   @RequestMapping(
       value = "/{id}",
       method = RequestMethod.DELETE,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public ResponseEntity<CatDto> deleteTagById(@PathVariable("id")
+  public ResponseEntity<CatDto> deleteCatById(@PathVariable("id")
                                               @Min(value = 1, message = "id must be positive") final long id) {
     log.info("get cat {}", id);
     catService.delete(id);
     return ResponseEntity.noContent().build();
   }
-
 }
