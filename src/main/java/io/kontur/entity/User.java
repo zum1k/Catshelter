@@ -28,7 +28,8 @@ public class User extends AbstractEntity<Long> {
   private String secondName;
   @Column(name = "phone_number")
   private String phoneNumber;
-  private UserType userType;
+  @Column(name = "role")
+  private Role userType;
   @Column(name = "сreate_date")
   private ZonedDateTime createDate;
   @Column(name = "last_update_date")
