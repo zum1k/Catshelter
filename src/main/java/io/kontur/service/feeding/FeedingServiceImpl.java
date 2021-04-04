@@ -2,6 +2,7 @@ package io.kontur.service.feeding;
 
 import io.kontur.entity.Feeding;
 import io.kontur.exception.EntityNotAddedException;
+import io.kontur.exception.EntityNotFoundException;
 import io.kontur.repository.Repository;
 import io.kontur.service.dto.FeedingDto;
 import io.kontur.utils.mapper.FeedingMapper;
@@ -32,12 +33,18 @@ public class FeedingServiceImpl implements FeedingService {
 
   @Override
   public FeedingDto read(long id) {
-    return null;
+    log.info("find feeding {}", id);
+    Feeding feeding = repository.read(id);
+    return mapper.toDto(feeding);
   }
 
   @Override
   public List<FeedingDto> readAll() {
-    return null;
+    List<Feeding> feedings = repository.readAll();
+    if (feedings.isEmpty()) {
+      throw new EntityNotFoundException(ENTITY_NAME, 0L);
+    }
+    return mapper.toDtoList(feedings);
   }
 
 

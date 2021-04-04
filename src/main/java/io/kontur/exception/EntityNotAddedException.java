@@ -1,5 +1,8 @@
 package io.kontur.exception;
 
+import lombok.Getter;
+
+@Getter
 public class EntityNotAddedException extends RepositoryException {
   private final int errorCode = 40401;
 
