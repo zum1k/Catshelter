@@ -23,13 +23,13 @@ public class CatServiceImpl implements CatService {
   private final Repository<Cat> repository;
   private final CatMapper catMapper;
 
+  @Transactional
   @Override
   public CatDto create(CatDto dto) {
     log.info("add cat");
     CriteriaSpecification<Cat> specification = new CatByNameSpecification(dto.getName());
     Optional<Cat> catOptional = repository.findBySpecification(specification);
     if (catOptional.isEmpty()) {
-      dto.setId(0L);
       return catMapper.toDto(repository.create(catMapper.toEntity(dto)).get());
     }
     return catMapper.toDto(catOptional.get());

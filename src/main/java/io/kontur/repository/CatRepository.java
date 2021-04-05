@@ -6,6 +6,7 @@ import io.kontur.repository.specification.CriteriaSpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -64,6 +65,7 @@ public class CatRepository implements Repository<Cat> {
   }
 
   @Override
+  @Transactional
   public Optional<Cat> findBySpecification(CriteriaSpecification<Cat> specification) {
     TypedQuery<Cat> query = entityManager.createQuery(mapQuery(specification));
     return query.getResultStream().findFirst();

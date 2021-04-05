@@ -10,7 +10,7 @@ import java.time.ZonedDateTime;
 @Data
 @NoArgsConstructor
 public class CatDto extends RepresentationModel<CatDto> {
-  private Long id;
+  private Integer id;
   private String name;
   private ZonedDateTime createDate;
   private ZonedDateTime lastUpdateDate;

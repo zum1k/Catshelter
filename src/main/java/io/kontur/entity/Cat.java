@@ -26,7 +26,7 @@ public class Cat extends AbstractEntity<Integer> {
   @Column(name = "last_update_date")
   private ZonedDateTime lastUpdateDate;
 
-  @OneToMany(mappedBy = "cat", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+  @OneToMany(mappedBy = "cat", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
   @EqualsAndHashCode.Exclude
   @ToString.Exclude
   @JsonBackReference
