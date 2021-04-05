@@ -13,8 +13,4 @@ public abstract class AbstractEntity<T extends Number> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private T id;
-
-  public AbstractEntity(T id) {
-    this.id = id;
-  }
 }

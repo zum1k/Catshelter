@@ -24,7 +24,6 @@ public class CatServiceImpl implements CatService {
   private final CatMapper catMapper;
 
   @Override
-  @Transactional
   public CatDto create(CatDto dto) {
     log.info("add cat");
     CriteriaSpecification<Cat> specification = new CatByNameSpecification(dto.getName());

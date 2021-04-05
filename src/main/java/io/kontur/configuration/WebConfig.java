@@ -2,10 +2,7 @@ package io.kontur.configuration;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
@@ -51,6 +48,7 @@ public class WebConfig implements WebMvcConfigurer {
   }
 
   @Bean
+  @Primary
   public PlatformTransactionManager getTransactionManager(
       EntityManagerFactory entityManagerFactory) {
     JpaTransactionManager transactionManager = new JpaTransactionManager();
@@ -68,8 +66,4 @@ public class WebConfig implements WebMvcConfigurer {
     entityManagerFactoryBean.setJpaVendorAdapter(vendorAdapter);
     return entityManagerFactoryBean;
   }
-//    @Bean
-//    public BCryptPasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
 }

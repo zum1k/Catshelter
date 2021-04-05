@@ -15,7 +15,6 @@ public class AuditEntityDateListener {
       auditEntity.setLastUpdateDate(currentTime);
     }
   }
-
   @PreUpdate
   public void onUpdate(AuditEntity auditEntity) {
     auditEntity.setLastUpdateDate(ZonedDateTime.now());

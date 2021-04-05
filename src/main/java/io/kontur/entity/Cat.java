@@ -12,19 +12,21 @@ import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @EntityListeners({AuditEntityDateListener.class})
 @Data
 @NoArgsConstructor
 @Table(name = "cat")
 @Entity
-public class Cat extends AbstractEntity<Long> {
+public class Cat extends AbstractEntity<Integer> {
+  @Column(name = "name")
   private String name;
-  @Column(name = "сreate_date")
+  @Column(name = "create_date")
   private ZonedDateTime createDate;
   @Column(name = "last_update_date")
   private ZonedDateTime lastUpdateDate;
 
-  @OneToMany(mappedBy = "cat", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  @OneToMany(mappedBy = "cat", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
   @EqualsAndHashCode.Exclude
   @ToString.Exclude
   @JsonBackReference

@@ -5,10 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.ZonedDateTime;
 
 @EqualsAndHashCode(callSuper = true)
@@ -17,11 +14,17 @@ import java.time.ZonedDateTime;
 @NoArgsConstructor
 @Table(name = "feeding")
 @Entity
-public class Feeding extends AbstractEntity<Long> {
-  @Column(name = "user_id")
-  private Long userId;
-  @Column(name = "cat_id")
-  private Long catId;
+public class Feeding extends AbstractEntity<Integer> {
+
+  @ManyToOne(optional = false, fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id", nullable = false)
+  @EqualsAndHashCode.Exclude
+  private User user;
+
+  @ManyToOne(optional = false, fetch = FetchType.LAZY)
+  @JoinColumn(name = "cat_id", nullable = false)
+  @EqualsAndHashCode.Exclude
+  private Cat cat;
   @Column(name = "feeding_time")
   private ZonedDateTime feedingTime;
 }

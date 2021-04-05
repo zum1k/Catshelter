@@ -65,7 +65,8 @@ public class CatController {
     return ResponseEntity.ok().body(linkModifier.allWithPagination(dtos));
   }
 
-  @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+  @RequestMapping(
+      value = "/hungry",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<CollectionModel<CatDto>> hungryCats() {
     log.info("get hungry cats");
