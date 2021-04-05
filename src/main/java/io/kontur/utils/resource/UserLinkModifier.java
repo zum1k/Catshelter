@@ -12,7 +12,6 @@ import java.util.List;
 public class UserLinkModifier implements DtoLinkModifier<UserDto> {
   @Override
   public void withTagLocation(UserDto userDto) {
-
   }
 
   @Override

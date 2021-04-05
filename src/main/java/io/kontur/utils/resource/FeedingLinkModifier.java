@@ -12,7 +12,6 @@ import java.util.List;
 public class FeedingLinkModifier implements DtoLinkModifier<FeedingDto> {
   @Override
   public void withTagLocation(FeedingDto feedingDto) {
-
   }
 
   @Override
