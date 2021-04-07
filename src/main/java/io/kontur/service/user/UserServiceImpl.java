@@ -1,5 +1,6 @@
 package io.kontur.service.user;
 
+import io.kontur.entity.Role;
 import io.kontur.entity.User;
 import io.kontur.exception.EntityNotFoundException;
 import io.kontur.repository.UserCrudRepository;
@@ -27,6 +28,7 @@ public class UserServiceImpl implements UserService {
     Optional<User> userOptional = repository.findUserByLogin(dto.getLogin());
     if (userOptional.isEmpty()) {
       User user = userMapper.toEntity(dto);
+      user.setUserType(Role.VOLUNTEER);
       user.setCreateDate(ZonedDateTime.now());
       user.setLastUpdateDate(ZonedDateTime.now());
       return userMapper.toDto(repository.save(user));

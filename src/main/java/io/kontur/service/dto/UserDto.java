@@ -9,8 +9,9 @@ import org.springframework.hateoas.RepresentationModel;
 @Data
 @NoArgsConstructor
 public class UserDto extends RepresentationModel<UserDto> {
-  private Long id;
+  private Integer id;
   private String login;
+  private String password;
   private String firstName;
   private String lastName;
   private String phoneNumber;

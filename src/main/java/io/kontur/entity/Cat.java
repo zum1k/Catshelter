@@ -21,7 +21,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 public class Cat extends AbstractEntity<Integer>  {
-  private Integer id;
   @Column(name = "name")
   private String name;
   @Column(name = "create_date")

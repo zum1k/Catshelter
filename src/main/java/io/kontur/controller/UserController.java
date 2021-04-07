@@ -3,7 +3,6 @@ package io.kontur.controller;
 import io.kontur.service.dto.CatDto;
 import io.kontur.service.dto.UserDto;
 import io.kontur.service.feeding.FeedingService;
-import io.kontur.service.user.UserService;
 import io.kontur.service.user.UserServiceImpl;
 import io.kontur.utils.resource.FeedingLinkModifier;
 import io.kontur.utils.resource.UserLinkModifier;
@@ -16,8 +15,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import java.net.URI;
 import java.util.List;
 
 @Slf4j
@@ -30,6 +32,22 @@ public class UserController {
   private final FeedingLinkModifier feedingLinkModifier;
   private final UserServiceImpl userService;
   private final FeedingService feedingService;
+
+  @RequestMapping(
+      consumes = MediaType.APPLICATION_JSON_VALUE,
+      method = RequestMethod.POST,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.CREATED)
+  public ResponseEntity<UserDto> addUser(@Valid @RequestBody UserDto dto) {
+    log.info("add user");
+    UserDto userDto = userService.create(dto);
+    URI location =
+        ServletUriComponentsBuilder.fromCurrentRequest()
+            .path("/{id}")
+            .buildAndExpand(userDto.getId())
+            .toUri();
+    return ResponseEntity.created(location).build();
+  }
 
   @RequestMapping(
       value = "/{id}",
