@@ -2,16 +2,14 @@ package io.kontur.service.user;
 
 import io.kontur.entity.User;
 import io.kontur.exception.EntityNotFoundException;
-import io.kontur.repository.Repository;
-import io.kontur.repository.specification.CriteriaSpecification;
-import io.kontur.repository.specification.UserByLoginSpecification;
+import io.kontur.repository.UserCrudRepository;
 import io.kontur.service.dto.UserDto;
 import io.kontur.utils.mapper.UserMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,40 +18,45 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
   private static final String ENTITY_NAME = "User";
-  private final Repository<User> repository;
+  private final UserCrudRepository repository;
   private final UserMapper userMapper;
 
   @Override
-  @Transactional
   public UserDto create(UserDto dto) {
     log.info("add user");
-    CriteriaSpecification<User> specification = new UserByLoginSpecification(dto.getLogin());
-    Optional<User> userOptional = repository.findBySpecification(specification);
+    Optional<User> userOptional = repository.findUserByLogin(dto.getLogin());
     if (userOptional.isEmpty()) {
-      dto.setId(0L);
-      return userMapper.toDto(repository.create(userMapper.toEntity(dto)).get());
+      User user = userMapper.toEntity(dto);
+      user.setCreateDate(ZonedDateTime.now());
+      user.setLastUpdateDate(ZonedDateTime.now());
+      return userMapper.toDto(repository.save(user));
     }
     return userMapper.toDto(userOptional.get());
   }
 
   @Override
-  public UserDto read(long id) {
+  public UserDto read(int id) {
     log.info("find user {}", id);
-    User user = repository.read(id);
-    return userMapper.toDto(user);
+    Optional<User> optionalUser = repository.findById(id);
+    if (optionalUser.isEmpty()) {
+      throw new EntityNotFoundException(ENTITY_NAME, id);
+    }
+    return userMapper.toDto(optionalUser.get());
   }
 
   @Override
-  @Transactional
-  public UserDto delete(long id) {
+  public UserDto delete(int id) {
     log.info("delete user {}", id);
-    Optional<User> userOptional = repository.remove(id);
-    return userMapper.toDto(userOptional.orElseThrow(() -> new EntityNotFoundException(ENTITY_NAME, id)));
+    Optional<User> userOptional = repository.findById(id);
+    if (userOptional.isEmpty()) {
+      throw new EntityNotFoundException(ENTITY_NAME, id);
+    }
+    return userMapper.toDto(userOptional.get());
   }
 
   @Override
   public List<UserDto> allUsers() {
-    List<User> users = repository.readAll();
+    List<User> users = (List<User>) repository.findAll();
     if (users.isEmpty()) {
       throw new EntityNotFoundException(ENTITY_NAME, 0L);
     }

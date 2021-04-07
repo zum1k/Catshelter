@@ -4,6 +4,7 @@ import io.kontur.service.dto.CatDto;
 import io.kontur.service.dto.UserDto;
 import io.kontur.service.feeding.FeedingService;
 import io.kontur.service.user.UserService;
+import io.kontur.service.user.UserServiceImpl;
 import io.kontur.utils.resource.FeedingLinkModifier;
 import io.kontur.utils.resource.UserLinkModifier;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ import java.util.List;
 public class UserController {
   private final UserLinkModifier linkModifier;
   private final FeedingLinkModifier feedingLinkModifier;
-  private final UserService userService;
+  private final UserServiceImpl userService;
   private final FeedingService feedingService;
 
   @RequestMapping(
@@ -36,7 +37,7 @@ public class UserController {
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<UserDto> findUser(@PathVariable("id")
-                                          @Min(value = 1, message = "id must be positive") final long id) {
+                                          @Min(value = 1, message = "id must be positive") final int id) {
     log.info("find user {}", id);
     UserDto userDto = userService.read(id);
     linkModifier.withTagLocation(userDto);
@@ -57,7 +58,7 @@ public class UserController {
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<CatDto> deleteCatById(@PathVariable("id")
-                                              @Min(value = 1, message = "id must be positive") final long id) {
+                                              @Min(value = 1, message = "id must be positive") final int id) {
     log.info("get user {}", id);
     userService.delete(id);
     return ResponseEntity.noContent().build();

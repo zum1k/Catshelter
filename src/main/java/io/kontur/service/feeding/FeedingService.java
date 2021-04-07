@@ -7,7 +7,7 @@ import java.util.List;
 public interface FeedingService {
   FeedingDto create(FeedingDto dto);
 
-  FeedingDto read(long id);
+  FeedingDto read(int id);
 
   List<FeedingDto> readAll();
 

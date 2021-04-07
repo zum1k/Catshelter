@@ -10,19 +10,17 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-//@EqualsAndHashCode(callSuper = true)
-//@EntityListeners({AuditEntityDateListener.class})
+
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @Entity
-public class Cat  {
-  @Id
-  @Column(name = "id")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class Cat extends AbstractEntity<Integer>  {
   private Integer id;
   @Column(name = "name")
   private String name;
