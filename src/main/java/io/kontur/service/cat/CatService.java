@@ -7,9 +7,9 @@ import java.util.List;
 public interface CatService {
   CatDto create(CatDto dto);
 
-  CatDto read(long id);
+  CatDto read(int id);
 
-  CatDto delete(long id);
+  CatDto delete(int id);
 
   List<CatDto> findHungryCats();
 

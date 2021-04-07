@@ -13,6 +13,6 @@ import javax.persistence.MappedSuperclass;
 @NoArgsConstructor
 public abstract class AbstractEntity<T extends Number> {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private T id;
 }
