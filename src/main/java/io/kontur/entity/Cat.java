@@ -27,10 +27,10 @@ public class Cat extends AbstractEntity<Integer>  {
   private ZonedDateTime createDate;
   @Column(name = "last_update_date")
   private ZonedDateTime lastUpdateDate;
-//
-//  @OneToMany(mappedBy = "cat", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-//  @EqualsAndHashCode.Exclude
-//  @ToString.Exclude
-//  @JsonBackReference
-//  private Set<Feeding> feedings = new HashSet<>();
+
+  @OneToMany(mappedBy = "cat", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  @EqualsAndHashCode.Exclude
+  @ToString.Exclude
+  @JsonBackReference
+  private Set<Feeding> feedings = new HashSet<>();
 }

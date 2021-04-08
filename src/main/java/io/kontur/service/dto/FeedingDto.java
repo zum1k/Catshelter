@@ -5,14 +5,18 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 public class FeedingDto extends RepresentationModel<FeedingDto> {
-  private Long id;
-  private Long userId;
-  private Long catId;
+  private Integer id;
+  @NotNull()
+  @Min(value = 0, message = "Value can't be less than 0")
+  private int userId;
+  private CatDto catDto;
   private ZonedDateTime feedingTime;
 }

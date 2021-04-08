@@ -2,9 +2,7 @@ package io.kontur.controller;
 
 import io.kontur.service.dto.CatDto;
 import io.kontur.service.dto.UserDto;
-import io.kontur.service.feeding.FeedingService;
-import io.kontur.service.user.UserServiceImpl;
-import io.kontur.utils.resource.FeedingLinkModifier;
+import io.kontur.service.user.UserService;
 import io.kontur.utils.resource.UserLinkModifier;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,9 +27,7 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserController {
   private final UserLinkModifier linkModifier;
-  private final FeedingLinkModifier feedingLinkModifier;
-  private final UserServiceImpl userService;
-  private final FeedingService feedingService;
+  private final UserService userService;
 
   @RequestMapping(
       consumes = MediaType.APPLICATION_JSON_VALUE,

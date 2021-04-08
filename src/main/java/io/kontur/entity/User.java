@@ -1,12 +1,16 @@
 package io.kontur.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.kontur.utils.roleconverter.RoleConverter;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @EqualsAndHashCode(callSuper = true)
@@ -34,9 +38,9 @@ public class User extends AbstractEntity<Integer> {
   @Column(name = "last_update_date")
   private ZonedDateTime lastUpdateDate;
 //
-//  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-//  @EqualsAndHashCode.Exclude
-//  @ToString.Exclude
-//  @JsonBackReference
-//  private Set<Feeding> feedings = new HashSet<>();
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  @EqualsAndHashCode.Exclude
+  @ToString.Exclude
+  @JsonBackReference
+  private Set<Feeding> feedings = new HashSet<>();
 }
