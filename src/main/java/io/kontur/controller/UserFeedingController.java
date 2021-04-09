@@ -6,6 +6,7 @@ import io.kontur.utils.resource.FeedingLinkModifier;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,14 +15,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.net.URI;
+import java.util.List;
 
 @Slf4j
 @Validated
 @RestController
 @RequestMapping("/users/{id}/feedings")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class UserFeedingsController {
+public class UserFeedingController {
   private final FeedingService service;
   private final FeedingLinkModifier modifier;
 
@@ -40,4 +43,18 @@ public class UserFeedingsController {
             .toUri();
     return ResponseEntity.created(location).build();
   }
+
+  @RequestMapping(
+      consumes = MediaType.APPLICATION_JSON_VALUE,
+      method = RequestMethod.POST,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseEntity<CollectionModel<FeedingDto>> findAllByUserId(
+      @PathVariable("id")
+      @Min(value = 1, message = "id must be positive") final int id) {
+    log.info("find all feedings by user {}", id);
+    List<FeedingDto> feedingDtoList = service.findUserFeeding(id);
+    return ResponseEntity.ok().body(modifier.allWithPagination(feedingDtoList));
+  }
+
 }

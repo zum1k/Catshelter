@@ -66,7 +66,7 @@ public class CatController {
   }
 
   @RequestMapping(
-      value = "/hungry",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+      value = "/hungry", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<CollectionModel<CatDto>> hungryCats() {
     log.info("get hungry cats");
