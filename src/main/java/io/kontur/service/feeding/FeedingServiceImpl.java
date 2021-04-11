@@ -1,8 +1,12 @@
 package io.kontur.service.feeding;
 
+import io.kontur.entity.Cat;
 import io.kontur.entity.Feeding;
+import io.kontur.entity.User;
 import io.kontur.exception.EntityNotFoundException;
+import io.kontur.repository.CatCrudRepository;
 import io.kontur.repository.FeedingCrudRepository;
+import io.kontur.repository.UserCrudRepository;
 import io.kontur.service.dto.FeedingDto;
 import io.kontur.utils.mapper.FeedingMapper;
 import lombok.AllArgsConstructor;
@@ -17,21 +21,31 @@ import java.util.Optional;
 @Service
 public class FeedingServiceImpl implements FeedingService {
   private static final String ENTITY_NAME = "Feeding";
-  private final FeedingCrudRepository repository;
+  private static final String USER_ENTITY_NAME = "User";
+  private static final String CAT_ENTITY_NAME = "Cat";
+  private final FeedingCrudRepository feedingCrudRepository;
+  private final CatCrudRepository catCrudRepository;
+  private final UserCrudRepository userCrudRepository;
   private final FeedingMapper mapper;
 
   @Override
   public FeedingDto create(FeedingDto dto) {
     log.info("add feeding");
+    int userId = dto.getUserId();
+    int catId = dto.getCatDto().getId();
+
     Feeding feeding = mapper.toEntity(dto);
-    return mapper.toDto(repository.save(feeding));
+    feeding.setUser(findUserIfExists(userId));
+    feeding.setCat(findCatIfExists(catId));
+    return mapper.toDto(feedingCrudRepository.save(feeding));
   }
 
   @Override
   public FeedingDto read(int id) {
     log.info("find feeding {}", id);
-    Optional<Feeding> optionalFeeding = repository.findById(id);
+    Optional<Feeding> optionalFeeding = feedingCrudRepository.findById(id);
     if (optionalFeeding.isEmpty()) {
+      log.error("Feeding {} not found", id);
       throw new EntityNotFoundException(ENTITY_NAME, id);
     }
     return mapper.toDto(optionalFeeding.get());
@@ -39,21 +53,56 @@ public class FeedingServiceImpl implements FeedingService {
 
   @Override
   public List<FeedingDto> readAll() {
-    List<Feeding> feedings = (List<Feeding>) repository.findAll();
+    log.info("Find all feedings");
+    List<Feeding> feedings = (List<Feeding>) feedingCrudRepository.findAll();
     if (feedings.isEmpty()) {
+      log.error("Feedings not found");
       throw new EntityNotFoundException(ENTITY_NAME, 0L);
     }
     return mapper.toDtoList(feedings);
   }
 
-
   @Override
-  public List<FeedingDto> findUserFeeding(long userId) {
-    return null;
+  public List<FeedingDto> findUserFeeding(int userId) {
+    log.info("find feedings by user {}", userId);
+    User user = findUserIfExists(userId);
+    List<Feeding> feedings = feedingCrudRepository.findAllByUser(user);
+    if (feedings.isEmpty()) {
+      log.error("Feedings by user {} not found", userId);
+      throw new EntityNotFoundException(ENTITY_NAME, userId);
+    }
+    return mapper.toDtoList(feedings);
   }
 
   @Override
-  public List<FeedingDto> findCatFeeding(long catId) {
-    return null;
+  public List<FeedingDto> findCatFeeding(int catId) {
+    log.info("find feedings by cat {}", catId);
+    Cat cat = findCatIfExists(catId);
+    List<Feeding> feedings = feedingCrudRepository.findAllByCat(cat);
+    if (feedings.isEmpty()) {
+      log.error("Feedings by cat {} not found", catId);
+      throw new EntityNotFoundException(ENTITY_NAME, catId);
+    }
+    return mapper.toDtoList(feedings);
+  }
+
+  private User findUserIfExists(int userId) {
+    log.info("find user by {}", userId);
+    Optional<User> optionalUser = userCrudRepository.findById(userId);
+    if (optionalUser.isEmpty()) {
+      log.error("User {} not found", userId);
+      throw new EntityNotFoundException(USER_ENTITY_NAME, userId);
+    }
+    return optionalUser.get();
+  }
+
+  private Cat findCatIfExists(int catId) {
+    log.info("find cat by {}", catId);
+    Optional<Cat> optionalCat = catCrudRepository.findById(catId);
+    if (optionalCat.isEmpty()) {
+      log.error("Cat {} not found", catId);
+      throw new EntityNotFoundException(CAT_ENTITY_NAME, catId);
+    }
+    return optionalCat.get();
   }
 }

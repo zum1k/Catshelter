@@ -1,11 +1,13 @@
 package io.kontur.controller;
 
+import io.kontur.service.dto.CatDto;
 import io.kontur.service.dto.FeedingDto;
 import io.kontur.service.feeding.FeedingService;
 import io.kontur.utils.resource.FeedingLinkModifier;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.jaxb.SpringDataJaxb;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,20 +35,26 @@ public class UserFeedingController {
       method = RequestMethod.POST,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
-  public ResponseEntity<FeedingDto> addFeeding(@Valid @RequestBody FeedingDto dto) {
+  public ResponseEntity<FeedingDto> addFeeding(
+      @PathVariable("id")
+      @Min(value = 1, message = "id must be positive") final int id,
+      @Valid @RequestBody CatDto dto) {
     log.info("add feeding");
-    FeedingDto feedingDto = service.create(dto);
+    FeedingDto feedingDto = new FeedingDto();
+    feedingDto.setUserId(id);
+    feedingDto.setCatDto(dto);
+    FeedingDto resultDto = service.create(feedingDto);
     URI location =
         ServletUriComponentsBuilder.fromCurrentRequest()
             .path("/{id}")
-            .buildAndExpand(feedingDto.getId())
+            .buildAndExpand(resultDto.getId())
             .toUri();
     return ResponseEntity.created(location).build();
   }
 
   @RequestMapping(
       consumes = MediaType.APPLICATION_JSON_VALUE,
-      method = RequestMethod.POST,
+      method = RequestMethod.GET,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<CollectionModel<FeedingDto>> findAllByUserId(
