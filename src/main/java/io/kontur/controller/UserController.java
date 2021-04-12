@@ -77,4 +77,17 @@ public class UserController {
     userService.delete(id);
     return ResponseEntity.noContent().build();
   }
+
+  @RequestMapping(
+      value = "/{id}/cats",
+      method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseEntity<CollectionModel<UserDto>> findAll(@PathVariable("id")
+                                                            @Min(value = 1, message = "id must be positive") final int id) {
+    log.info("find all user {} cats", id);
+    List<UserDto> userDtos = userService.allUsers();
+    return ResponseEntity.ok().body(linkModifier.allWithPagination(userDtos));
+  }
+
+
 }

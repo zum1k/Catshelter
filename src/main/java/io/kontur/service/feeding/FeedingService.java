@@ -11,7 +11,7 @@ public interface FeedingService {
 
   List<FeedingDto> readAll();
 
-  List<FeedingDto> findUserFeeding(long userId);
+  List<FeedingDto> findUserFeeding(int userId);
 
-  List<FeedingDto> findCatFeeding(long catId);
+  List<FeedingDto> findCatFeeding(int catId);
 }

@@ -2,7 +2,10 @@ package io.kontur.controller;
 
 import io.kontur.service.cat.CatService;
 import io.kontur.service.dto.CatDto;
+import io.kontur.service.dto.FeedingDto;
+import io.kontur.service.feeding.FeedingService;
 import io.kontur.utils.resource.CatLinkModifier;
+import io.kontur.utils.resource.FeedingLinkModifier;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +28,11 @@ import java.util.List;
 @RequestMapping("/cats")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CatController {
-  private final CatLinkModifier linkModifier;
   private final CatService catService;
+  private final FeedingService feedingService;
+  private final CatLinkModifier linkModifier;
+  private final FeedingLinkModifier feedingLinkModifier;
+
 
   @RequestMapping(
       consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -79,10 +85,24 @@ public class CatController {
       method = RequestMethod.DELETE,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public ResponseEntity<CatDto> deleteCatById(@PathVariable("id")
-                                              @Min(value = 1, message = "id must be positive") final int id) {
+  public ResponseEntity<CatDto> deleteCatById(
+      @PathVariable("id")
+      @Min(value = 1, message = "id must be positive") final int id) {
     log.info("get cat {}", id);
     catService.delete(id);
     return ResponseEntity.noContent().build();
+  }
+
+  @RequestMapping(
+      value = "/{id}/feedings",
+      method = RequestMethod.DELETE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseEntity<CollectionModel<FeedingDto>> findAllFeedingByCatId(
+      @PathVariable("id")
+      @Min(value = 1, message = "id must be positive") final int id) {
+    log.info("find all feedings by cat {}", id);
+    List<FeedingDto> dtos = feedingService.findCatFeeding(id);
+    return ResponseEntity.ok().body(feedingLinkModifier.allWithPagination(dtos));
   }
 }

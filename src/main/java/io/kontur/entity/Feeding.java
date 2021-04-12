@@ -15,7 +15,6 @@ import java.time.ZonedDateTime;
 @Table(name = "feeding")
 @Entity
 public class Feeding extends AbstractEntity<Integer> {
-
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id", nullable = false)
   @EqualsAndHashCode.Exclude

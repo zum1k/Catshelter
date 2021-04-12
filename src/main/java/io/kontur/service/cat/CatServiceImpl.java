@@ -58,6 +58,7 @@ public class CatServiceImpl implements CatService {
 
   @Override
   public List<CatDto> findHungryCats() {
+
     return null;
   }
 
