@@ -7,11 +7,11 @@ import java.util.List;
 public interface FeedingService {
   FeedingDto create(FeedingDto dto);
 
-  FeedingDto read(int id);
+  FeedingDto read(long id);
 
   List<FeedingDto> readAll();
 
-  List<FeedingDto> findUserFeeding(int userId);
+  List<FeedingDto> findUserFeeding(long userId);
 
-  List<FeedingDto> findCatFeeding(int catId);
+  List<FeedingDto> findCatFeeding(long catId);
 }

@@ -56,7 +56,7 @@ public class CatController {
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<CatDto> findCatById(@PathVariable("id")
-                                            @Min(value = 1, message = "id must be positive") final int id) {
+                                            @Min(value = 1, message = "id must be positive") final long id) {
     log.info("get cat {}", id);
     CatDto dto = catService.read(id);
     linkModifier.withTagLocation(dto);
@@ -87,7 +87,7 @@ public class CatController {
   @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<CatDto> deleteCatById(
       @PathVariable("id")
-      @Min(value = 1, message = "id must be positive") final int id) {
+      @Min(value = 1, message = "id must be positive") final long id) {
     log.info("get cat {}", id);
     catService.delete(id);
     return ResponseEntity.noContent().build();

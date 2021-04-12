@@ -9,7 +9,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Set;
 
-public interface FeedingCrudRepository extends CrudRepository<Feeding, Integer> {
+public interface FeedingCrudRepository extends CrudRepository<Feeding, Long> {
   List<Feeding> findAllByCat(Cat cat);
 
   List<Feeding> findAllByUser(User user);

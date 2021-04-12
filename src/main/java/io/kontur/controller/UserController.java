@@ -51,7 +51,7 @@ public class UserController {
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<UserDto> findUser(@PathVariable("id")
-                                          @Min(value = 1, message = "id must be positive") final int id) {
+                                          @Min(value = 1, message = "id must be positive") final long id) {
     log.info("find user {}", id);
     UserDto userDto = userService.read(id);
     linkModifier.withTagLocation(userDto);
@@ -72,7 +72,7 @@ public class UserController {
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<CatDto> deleteCatById(@PathVariable("id")
-                                              @Min(value = 1, message = "id must be positive") final int id) {
+                                              @Min(value = 1, message = "id must be positive") final long id) {
     log.info("get user {}", id);
     userService.delete(id);
     return ResponseEntity.noContent().build();
@@ -83,7 +83,7 @@ public class UserController {
       method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<CollectionModel<UserDto>> findAll(@PathVariable("id")
-                                                            @Min(value = 1, message = "id must be positive") final int id) {
+                                                            @Min(value = 1, message = "id must be positive") final long id) {
     log.info("find all user {} cats", id);
     List<UserDto> userDtos = userService.allUsers();
     return ResponseEntity.ok().body(linkModifier.allWithPagination(userDtos));

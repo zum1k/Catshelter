@@ -11,7 +11,7 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 @Data
 @NoArgsConstructor
-public abstract class AbstractEntity<T extends Number> {
+public abstract class AbstractEntity<T> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private T id;

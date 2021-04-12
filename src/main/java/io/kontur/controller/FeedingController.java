@@ -37,7 +37,7 @@ public class FeedingController {
   @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<FeedingDto> findFeedingByUser(
       @PathVariable("id")
-      @Min(value = 1, message = "id must be positive") final int id) {
+      @Min(value = 1, message = "id must be positive") final long id) {
     log.info("find feeding by id");
     FeedingDto dto = service.read(id);
     feedingLinkModifier.withTagLocation(dto);

@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public UserDto read(int id) {
+  public UserDto read(long id) {
     log.info("find user {}", id);
     Optional<User> optionalUser = repository.findById(id);
     if (optionalUser.isEmpty()) {
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public UserDto delete(int id) {
+  public UserDto delete(long id) {
     log.info("delete user {}", id);
     Optional<User> userOptional = repository.findById(id);
     if (userOptional.isEmpty()) {

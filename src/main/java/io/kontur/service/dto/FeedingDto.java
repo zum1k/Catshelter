@@ -13,10 +13,10 @@ import java.time.ZonedDateTime;
 @Data
 @NoArgsConstructor
 public class FeedingDto extends RepresentationModel<FeedingDto> {
-  private Integer id;
+  private long id;
   @NotNull()
   @Min(value = 0, message = "Value can't be less than 0")
-  private int userId;
+  private long userId;
   private CatDto catDto;
   private ZonedDateTime feedingTime;
 }

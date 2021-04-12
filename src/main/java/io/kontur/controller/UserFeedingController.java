@@ -37,7 +37,7 @@ public class UserFeedingController {
   @ResponseStatus(HttpStatus.CREATED)
   public ResponseEntity<FeedingDto> addFeeding(
       @PathVariable("id")
-      @Min(value = 1, message = "id must be positive") final int id,
+      @Min(value = 1, message = "id must be positive") final long id,
       @Valid @RequestBody CatDto dto) {
     log.info("add feeding");
     FeedingDto feedingDto = new FeedingDto();
@@ -59,7 +59,7 @@ public class UserFeedingController {
   @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<CollectionModel<FeedingDto>> findAllByUserId(
       @PathVariable("id")
-      @Min(value = 1, message = "id must be positive") final int id) {
+      @Min(value = 1, message = "id must be positive") final long id) {
     log.info("find all feedings by user {}", id);
     List<FeedingDto> feedingDtoList = service.findUserFeeding(id);
     return ResponseEntity.ok().body(modifier.allWithPagination(feedingDtoList));

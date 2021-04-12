@@ -12,6 +12,7 @@ import io.kontur.utils.mapper.FeedingMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -32,8 +33,8 @@ public class FeedingServiceImpl implements FeedingService {
   @Override
   public FeedingDto create(FeedingDto dto) {
     log.info("add feeding");
-    int userId = dto.getUserId();
-    int catId = dto.getCatDto().getId();
+    long userId = dto.getUserId();
+    long catId = dto.getCatDto().getId();
 
     Feeding feeding = mapper.toEntity(dto);
     feeding.setUser(findUserIfExists(userId));
@@ -43,7 +44,7 @@ public class FeedingServiceImpl implements FeedingService {
   }
 
   @Override
-  public FeedingDto read(int id) {
+  public FeedingDto read(long id) {
     log.info("find feeding {}", id);
     Optional<Feeding> optionalFeeding = feedingCrudRepository.findById(id);
     if (optionalFeeding.isEmpty()) {
@@ -65,7 +66,7 @@ public class FeedingServiceImpl implements FeedingService {
   }
 
   @Override
-  public List<FeedingDto> findUserFeeding(int userId) {
+  public List<FeedingDto> findUserFeeding(long userId) {
     log.info("find feedings by user {}", userId);
     User user = findUserIfExists(userId);
     List<Feeding> feedings = feedingCrudRepository.findAllByUser(user);
@@ -77,7 +78,7 @@ public class FeedingServiceImpl implements FeedingService {
   }
 
   @Override
-  public List<FeedingDto> findCatFeeding(int catId) {
+  public List<FeedingDto> findCatFeeding(long catId) {
     log.info("find feedings by cat {}", catId);
     Cat cat = findCatIfExists(catId);
     List<Feeding> feedings = feedingCrudRepository.findAllByCat(cat);
@@ -88,7 +89,7 @@ public class FeedingServiceImpl implements FeedingService {
     return mapper.toDtoList(feedings);
   }
 
-  private User findUserIfExists(int userId) {
+  private User findUserIfExists(long userId) {
     log.info("find user by {}", userId);
     Optional<User> optionalUser = userCrudRepository.findById(userId);
     if (optionalUser.isEmpty()) {
@@ -98,7 +99,7 @@ public class FeedingServiceImpl implements FeedingService {
     return optionalUser.get();
   }
 
-  private Cat findCatIfExists(int catId) {
+  private Cat findCatIfExists(long catId) {
     log.info("find cat by {}", catId);
     Optional<Cat> optionalCat = catCrudRepository.findById(catId);
     if (optionalCat.isEmpty()) {

@@ -9,7 +9,9 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -18,7 +20,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Table(name = "user")
 @Entity
-public class User extends AbstractEntity<Integer> {
+public class User extends AbstractEntity<Long> {
   @Column(name = "login")
   private String login;
   @Column(name = "password")
@@ -37,9 +39,9 @@ public class User extends AbstractEntity<Integer> {
   @Column(name = "last_update_date")
   private ZonedDateTime lastUpdateDate;
 
-  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  @OneToMany(mappedBy = "user" , fetch = FetchType.LAZY, cascade = CascadeType.ALL )
   @EqualsAndHashCode.Exclude
   @ToString.Exclude
   @JsonBackReference
-  private Set<Feeding> feedings = new HashSet<>();
+  private List<Feeding> feedings = new ArrayList<>();
 }

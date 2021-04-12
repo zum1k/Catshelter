@@ -14,16 +14,17 @@ import java.time.ZonedDateTime;
 @NoArgsConstructor
 @Table(name = "feeding")
 @Entity
-public class Feeding extends AbstractEntity<Integer> {
+public class Feeding extends AbstractEntity<Long> {
+  @ManyToOne (optional = false, fetch = FetchType.LAZY)
+  @JoinColumn(name = "cat_id" , nullable = false)
+  @EqualsAndHashCode.Exclude
+  private Cat cat;
+
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id", nullable = false)
+  @JoinColumn(name = "user_id" , nullable = false)
   @EqualsAndHashCode.Exclude
   private User user;
 
-  @ManyToOne(optional = false, fetch = FetchType.LAZY)
-  @JoinColumn(name = "cat_id", nullable = false)
-  @EqualsAndHashCode.Exclude
-  private Cat cat;
   @Column(name = "feeding_time")
   private ZonedDateTime feedingTime;
 }

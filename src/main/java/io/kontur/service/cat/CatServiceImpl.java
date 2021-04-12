@@ -36,7 +36,7 @@ public class CatServiceImpl implements CatService {
   }
 
   @Override
-  public CatDto read(int id) {
+  public CatDto read(long id) {
     log.info("find cat {}", id);
     Optional<Cat> catOptional = catCrudRepository.findById(id);
     if (catOptional.isEmpty()) {
@@ -46,7 +46,7 @@ public class CatServiceImpl implements CatService {
   }
 
   @Override
-  public CatDto delete(int id) {
+  public CatDto delete(long id) {
     log.info("delete cat {}", id);
     Optional<Cat> catOptional = catCrudRepository.findById(id);
     if (catOptional.isEmpty()) {
