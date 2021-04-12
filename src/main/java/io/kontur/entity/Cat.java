@@ -22,6 +22,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @Entity
+@Table(name = "cats")
 public class Cat extends AbstractEntity<Long>  {
   @Column(name = "name")
   private String name;

@@ -9,12 +9,12 @@ import javax.persistence.*;
 import java.time.ZonedDateTime;
 
 @EqualsAndHashCode(callSuper = true)
-@EntityListeners({AuditEntityDateListener.class})
 @Data
 @NoArgsConstructor
-@Table(name = "feeding")
+@Table(name = "feedings")
 @Entity
 public class Feeding extends AbstractEntity<Long> {
+
   @ManyToOne (optional = false, fetch = FetchType.LAZY)
   @JoinColumn(name = "cat_id" , nullable = false)
   @EqualsAndHashCode.Exclude

@@ -18,7 +18,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-@Table(name = "user")
+@Table(name = "users")
 @Entity
 public class User extends AbstractEntity<Long> {
   @Column(name = "login")

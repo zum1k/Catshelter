@@ -1,8 +1,8 @@
 package io.kontur.entity;
 
 public enum Role {
-  ADMIN("admin"),
-  VOLUNTEER("volunteer");
+  VOLUNTEER("volunteer"),
+  ADMIN("admin");
   private final String value;
 
   Role(String value) {

@@ -16,5 +16,5 @@ public interface FeedingCrudRepository extends CrudRepository<Feeding, Long> {
 
   List<Feeding> findAllByFeedingTimeLessThan(ZonedDateTime zonedDateTime);
 
-  Set<Feeding> findDistinctByCatAndFeedingTimeGreaterThan(Cat cat, ZonedDateTime feedingTime);
+ // Set<Feeding> findDistinctByCatAndFeedingTimeGreaterThan(Cat cat, ZonedDateTime feedingTime);
 }
