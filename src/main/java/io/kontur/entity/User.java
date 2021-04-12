@@ -31,7 +31,6 @@ public class User extends AbstractEntity<Integer> {
   private String phoneNumber;
   @Column(name = "role")
   @Convert(converter = RoleConverter.class)
-  @Enumerated(EnumType.ORDINAL)
   private Role userType;
   @Column(name = "create_date")
   private ZonedDateTime createDate;
