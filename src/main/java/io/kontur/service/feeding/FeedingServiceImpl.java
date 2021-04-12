@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +38,7 @@ public class FeedingServiceImpl implements FeedingService {
     Feeding feeding = mapper.toEntity(dto);
     feeding.setUser(findUserIfExists(userId));
     feeding.setCat(findCatIfExists(catId));
+    feeding.setFeedingTime(ZonedDateTime.now());
     return mapper.toDto(feedingCrudRepository.save(feeding));
   }
 

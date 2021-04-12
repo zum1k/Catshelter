@@ -36,7 +36,7 @@ public class User extends AbstractEntity<Integer> {
   private ZonedDateTime createDate;
   @Column(name = "last_update_date")
   private ZonedDateTime lastUpdateDate;
-//
+
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
   @EqualsAndHashCode.Exclude
   @ToString.Exclude
