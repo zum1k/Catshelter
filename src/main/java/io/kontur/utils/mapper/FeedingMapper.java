@@ -8,7 +8,10 @@ import org.mapstruct.Mappings;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(
+    componentModel = "spring",
+    uses = {CatMapper.class, UserMapper.class}
+)
 public interface FeedingMapper {
   @Mappings({
       @Mapping(target = "user", ignore = true),
@@ -20,6 +23,7 @@ public interface FeedingMapper {
   @Mappings({
       @Mapping(target = "id", source = "feeding.id"),
       @Mapping(target = "userId", source = "feeding.user.id"),
+      @Mapping(target = "catDto", source = "feeding.cat")
   })
   FeedingDto toDto(Feeding feeding);
 
