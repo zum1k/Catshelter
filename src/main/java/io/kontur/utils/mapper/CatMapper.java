@@ -9,6 +9,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface CatMapper {
+  @Mapping(target = "feedings", ignore = true)
   Cat toEntity(CatDto dto);
 
   CatDto toDto(Cat cat);

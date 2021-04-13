@@ -71,7 +71,7 @@ public class UserController {
       method = RequestMethod.DELETE,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public ResponseEntity<CatDto> deleteCatById(@PathVariable("id")
+  public ResponseEntity<CatDto> deleteUserById(@PathVariable("id")
                                               @Min(value = 1, message = "id must be positive") final long id) {
     log.info("get user {}", id);
     userService.delete(id);
@@ -82,7 +82,7 @@ public class UserController {
       value = "/{id}/cats",
       method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public ResponseEntity<CollectionModel<UserDto>> findAll(@PathVariable("id")
+  public ResponseEntity<CollectionModel<UserDto>> findCatsByUserId(@PathVariable("id")
                                                             @Min(value = 1, message = "id must be positive") final long id) {
     log.info("find all user {} cats", id);
     List<UserDto> userDtos = userService.allUsers();

@@ -9,6 +9,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
+  @Mapping(target = "feedings", ignore = true)
   User toEntity(UserDto dto);
 
   UserDto toDto(User user);
