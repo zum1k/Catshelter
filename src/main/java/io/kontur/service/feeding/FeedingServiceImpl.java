@@ -7,15 +7,19 @@ import io.kontur.exception.EntityNotFoundException;
 import io.kontur.repository.CatCrudRepository;
 import io.kontur.repository.FeedingCrudRepository;
 import io.kontur.repository.UserCrudRepository;
+import io.kontur.service.dto.CatDto;
 import io.kontur.service.dto.FeedingDto;
+import io.kontur.utils.mapper.CatMapper;
 import io.kontur.utils.mapper.FeedingMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @AllArgsConstructor
@@ -27,7 +31,8 @@ public class FeedingServiceImpl implements FeedingService {
   private final FeedingCrudRepository feedingCrudRepository;
   private final CatCrudRepository catCrudRepository;
   private final UserCrudRepository userCrudRepository;
-  private final FeedingMapper mapper;
+  private final FeedingMapper feedingMapper;
+//  private final CatMapper catMapper;
 
   @Override
   public FeedingDto create(FeedingDto dto) {
@@ -35,11 +40,11 @@ public class FeedingServiceImpl implements FeedingService {
     long userId = dto.getUserId();
     long catId = dto.getCatDto().getId();
 
-    Feeding feeding = mapper.toEntity(dto);
+    Feeding feeding = feedingMapper.toEntity(dto);
     feeding.setUser(findUserIfExists(userId));
     feeding.setCat(findCatIfExists(catId));
     feeding.setFeedingTime(ZonedDateTime.now());
-    return mapper.toDto(feedingCrudRepository.save(feeding));
+    return feedingMapper.toDto(feedingCrudRepository.save(feeding));
   }
 
   @Override
@@ -50,7 +55,7 @@ public class FeedingServiceImpl implements FeedingService {
       log.error("Feeding {} not found", id);
       throw new EntityNotFoundException(ENTITY_NAME, id);
     }
-    return mapper.toDto(optionalFeeding.get());
+    return feedingMapper.toDto(optionalFeeding.get());
   }
 
   @Override
@@ -61,7 +66,7 @@ public class FeedingServiceImpl implements FeedingService {
       log.error("Feedings not found");
       throw new EntityNotFoundException(ENTITY_NAME, 0L);
     }
-    return mapper.toDtoList(feedings);
+    return feedingMapper.toDtoList(feedings);
   }
 
   @Override
@@ -73,7 +78,7 @@ public class FeedingServiceImpl implements FeedingService {
       log.error("Feedings by user {} not found", userId);
       throw new EntityNotFoundException(ENTITY_NAME, userId);
     }
-    return mapper.toDtoList(feedings);
+    return feedingMapper.toDtoList(feedings);
   }
 
   @Override
@@ -85,7 +90,7 @@ public class FeedingServiceImpl implements FeedingService {
       log.error("Feedings by cat {} not found", catId);
       throw new EntityNotFoundException(ENTITY_NAME, catId);
     }
-    return mapper.toDtoList(feedings);
+    return feedingMapper.toDtoList(feedings);
   }
 
   private User findUserIfExists(long userId) {

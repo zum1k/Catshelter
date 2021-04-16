@@ -1,8 +1,10 @@
 package io.kontur.service.cat;
 
 import io.kontur.entity.Cat;
+import io.kontur.entity.Feeding;
 import io.kontur.exception.EntityNotFoundException;
 import io.kontur.repository.CatCrudRepository;
+import io.kontur.repository.FeedingCrudRepository;
 import io.kontur.service.dto.CatDto;
 import io.kontur.utils.mapper.CatMapper;
 import lombok.AllArgsConstructor;
@@ -10,16 +12,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @AllArgsConstructor
 @Service
 public class CatServiceImpl implements CatService {
   private static final String ENTITY_NAME = "Cat";
+  private static final int FEEDING_PERIOD_IN_HOURS = 4;
   private final CatMapper catMapper;
   private final CatCrudRepository catCrudRepository;
+  private FeedingCrudRepository feedingCrudRepository;
 
   @Override
   public CatDto create(CatDto dto) {
@@ -58,8 +62,23 @@ public class CatServiceImpl implements CatService {
 
   @Override
   public List<CatDto> findHungryCats() {
+    log.info("find hungry cats");
+    ZonedDateTime lastFourHourTime = ZonedDateTime.now().minusHours(FEEDING_PERIOD_IN_HOURS);
+    Set<Feeding> lastFourHourFeedings =
+        feedingCrudRepository.findAllByFeedingTimeGreaterThan(lastFourHourTime);
+    if (lastFourHourFeedings.isEmpty()) {
+      List<Cat> cats = (List<Cat>) catCrudRepository.findAll();
+      return catMapper.toDtoList(cats);
+    }
+    List<Cat> wellFedCats =
+        catCrudRepository.findDistinctByFeedingsIn(lastFourHourFeedings);
+    List<Cat> allCats = (List<Cat>) catCrudRepository.findAll();
 
-    return null;
+    Set<Cat> hungryCats = allCats.stream()
+        .filter(element -> !wellFedCats.contains(element))
+        .collect(Collectors.toSet());
+
+    return catMapper.toDtoList(new ArrayList<>(hungryCats));
   }
 
   @Override
