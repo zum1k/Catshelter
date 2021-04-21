@@ -13,6 +13,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -32,7 +33,6 @@ public class CatController {
   private final FeedingService feedingService;
   private final CatLinkModifier linkModifier;
   private final FeedingLinkModifier feedingLinkModifier;
-
 
   @RequestMapping(
       consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -63,21 +63,28 @@ public class CatController {
     return ResponseEntity.ok().body(dto);
   }
 
-  @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+  @RequestMapping(
+      method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<CollectionModel<CatDto>> allCats() {
-    log.info("get all cats");
+    log.info("find all cats");
     List<CatDto> dtos = catService.allCats();
     return ResponseEntity.ok().body(linkModifier.allWithPagination(dtos));
   }
-
+  @SubscribeMapping
   @RequestMapping(
-      value = "/hungry", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+      value = "/actions/hungry_cats",
+      method = RequestMethod.POST,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public ResponseEntity<CollectionModel<CatDto>> hungryCats() {
+  public ResponseEntity<CollectionModel<CatDto>> hungryCats(@RequestBody List<CatDto> hungryCats) {
     log.info("get hungry cats");
-    List<CatDto> dtos = catService.findHungryCats();
-    return ResponseEntity.ok().body(linkModifier.allWithPagination(dtos));
+    if (hungryCats.isEmpty()) {
+      List<CatDto> dtos = catService.findHungryCats();
+      return ResponseEntity.ok().body(linkModifier.allWithPagination(dtos));
+    }
+    return null;
   }
 
   @RequestMapping(

@@ -11,12 +11,16 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.websocket.server.ServerEndpoint;
 import java.net.URI;
 import java.util.List;
 
@@ -28,6 +32,7 @@ import java.util.List;
 public class UserFeedingController {
   private final FeedingService service;
   private final FeedingLinkModifier modifier;
+  private final SimpMessagingTemplate template;
 
   @RequestMapping(
       consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -43,6 +48,7 @@ public class UserFeedingController {
     feedingDto.setUserId(id);
     feedingDto.setCatDto(dto);
     FeedingDto resultDto = service.create(feedingDto);
+
     URI location =
         ServletUriComponentsBuilder.fromCurrentRequest()
             .path("/{id}")
